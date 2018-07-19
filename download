@@ -1,0 +1,18 @@
+#!/bin/bash
+clear
+echo "Downloading jung-portfolio"
+
+wget https://github.com/kongzii/jung-portfolio/archive/master.zip
+unzip master.zip
+
+rm -rf static/
+#rm -rf files/
+
+mkdir static/
+#mkdir files/
+
+mv -v jung-portfolio-master/dist/* /var/www/portfolio
+#mv -v jung-portfolio-master/files/* /var/www/portfolio/files
+
+rm master.zip
+rm -rf jung-portfolio-master

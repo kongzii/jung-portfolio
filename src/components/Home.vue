@@ -1,6 +1,8 @@
 <template>
   <section class="home">
 
+    <i-e-warning />
+
     <div class="about">
       <h1>Hi, I'm Peter.</h1>
       <h2>A full stack developer from Prague.</h2>
@@ -14,19 +16,14 @@
 
 <script>
 import CarouselWithButtons from '@/components/Home/Carousel/CarouselWithButtons.vue';
-import FlipCard from '@/components/Home/FlipCard/FlipCard.vue';
+import IEWarning from '@/components/IEWarning.vue';
 
 export default {
   name: 'Home',
 
   data () {
     return {
-
     }
-  },
-
-  mounted() {
-
   },
 
   methods: {
@@ -35,7 +32,7 @@ export default {
 
   components: {
     CarouselWithButtons,
-    FlipCard,
+    IEWarning,
   },
 
 }
@@ -45,7 +42,6 @@ export default {
 <style lang="less" scoped>
 
 .home {
-
   .about {
 
     @media (min-width: 1000px) {
