@@ -9,6 +9,7 @@
     :customFlipCount="flipCounts[0]"
 
     :bgImage="bgImage"
+    :bgImageBack="bgImageBack"
     :title="title"
     :subtitle="subtitle"
     :text="text"
@@ -39,6 +40,10 @@ export default {
 
   props: {
     bgImage: {
+      type: String,
+      default: '',
+    },
+    bgImageBack: {
       type: String,
       default: '',
     },

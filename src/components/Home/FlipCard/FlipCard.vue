@@ -3,19 +3,25 @@
     <div class="card" :style="{transform: `rotateX(${flipTimes * 180}deg)`}" @click="flip">
       <div class="face" face="front" ref="front" :style="{'background-image': `url(${bgImage})`}">
         <div class="normal" v-if="!sprite">
-          <h2>{{title}}</h2>
-          <h3>{{subtitle}}</h3>
+          <div class="title">
+            <h2 v-if="title">{{title}}</h2>
+            <h3 v-if="subtitle">{{subtitle}}</h3>
+          </div>
+
           <p>{{text}}</p>
         </div>
 
         <div class="sprite" v-else :style="imgStyle.front"></div>
       </div>
 
-      <div class="face" face="back" ref="back">
+      <div class="face" face="back" ref="back" :style="{'background-image': `url(${bgImageBack})`}">
         <div class="normal" v-if="!sprite">
-          <h2>Title Back</h2>
-          <h3>Subtitle Back Back Back Back Back</h3>
-          <p>Text Back</p>
+          <div class="title back">
+            <h2 v-if="backTitle">{{backTitle}}</h2>
+            <h3 v-if="backSubtitle">{{backSubtitle}}</h3>
+          </div>
+          
+          <!-- <p>Text Back</p> -->
         </div>
 
         <div class="sprite" v-else :style="imgStyle.back"></div>
@@ -32,6 +38,10 @@ export default {
 
   props: {
     bgImage: {
+      type: String,
+      default: '',
+    },
+    bgImageBack: {
       type: String,
       default: '',
     },
@@ -140,7 +150,25 @@ export default {
         justify-content: flex-start;
         width: 100%;
         height: 100%;
-        padding: 20px;
+
+        .title {
+          background: fade(white, 90%);
+          padding: 20px;
+          width: 30%;
+          border-bottom-right-radius: 20px;
+          
+          @media (max-width: 700px) {
+            width: 40%;
+          }
+
+          @media (max-width: 600px) {
+            width: 50%;
+          }
+
+          &.back {
+
+          }
+        }
       }
 
       &[face="front"] {
@@ -148,7 +176,7 @@ export default {
       }
 
       &[face="back"] {
-        background-color: blue;
+        background-color: transparent;
         transform: rotateX( 180deg );
 
         .sprite {
@@ -163,8 +191,19 @@ export default {
         margin-top: 0;
       }
 
+      h2 {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
       p {
         margin-top: auto;
+      }
+
+      h3 {
+        margin-bottom: 0;
+        margin-top: 10px;
+        text-align: center;
       }
 
       .sprite {

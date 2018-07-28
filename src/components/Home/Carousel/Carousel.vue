@@ -1,26 +1,25 @@
 <template>
   <section class="scene" ref="scene">
-
     <div class="carousel" ref="carousel" :style="{transform: `translateZ(${-sceneRadius}px) rotateY(${angle}deg)`}">
 
 			<div 
 				class="cell"
-				:class="{current: index == cell - 1, hover: !isRotating}"
+				:class="{current: index == (currentCell - 1), hover: !isRotating}"
 				v-for="(item, index) in cells"
 				:key="index"
-				:style="{transform: `rotateY(${40 * index}deg) translateZ(${cellRadius}px)`}"
+				:style="{transform: `rotateY(${theta * (index)}deg) translateZ(${cellRadius}px)`}"
 			>
-				<many-flip-cards @rotating="rotating" :bgImage="item.image" :title="item.title" :subtitle="item.subtitle" :text="item.text" />
+				<many-flip-cards @rotating="rotating" :bgImage="item.image" :bgImageBack="item.backImage" :title="item.title" :subtitle="item.subtitle" :text="item.text" />
 			</div>
 
     </div>
+			<p class="pagination"><span>{{currentCell}}</span> z <span>{{cellCount}}</span></p>
 
   </section>
 </template>
 
 <script>
 import ManyFlipCards from '@/components/Home/FlipCard/ManyFlipCards.vue';
-
 
 export default {
 	name: 'Carousel',
@@ -50,6 +49,10 @@ export default {
 	
 	computed: {
 
+		currentCell() {
+			return this.cell - this.round * this.cellCount;
+		},
+
 		sceneRadius() {
 			return Math.round( (this.carouselWidth / 2) / Math.tan( Math.PI / this.cellCount) );
 		},
@@ -65,6 +68,10 @@ export default {
 		cellCount() {
 			return this.cells.length;
 		},
+
+		round() {
+			return Math.floor((this.cell - 1) / (this.cellCount));
+		}
 
 	},
 
@@ -179,6 +186,17 @@ export default {
 
 		}
 	}
+
+	.pagination {
+			position: absolute;
+			bottom: -40px;
+			right: 20px;
+			font-size: 17px;
+
+			span {
+				font-size: 20px;
+			}
+		}
 }
 
 </style>

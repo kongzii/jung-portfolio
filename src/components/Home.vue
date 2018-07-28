@@ -4,9 +4,10 @@
     <i-e-warning />
 
     <div class="about">
-      <h1>Hi, I'm Peter.</h1>
-      <h2>A full stack developer from Prague.</h2>
-      <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</p>
+      <h1>Ahoj, jsem Peter.</h1> 
+      <h2>Full stack vývojář z Prahy.</h2> 
+      <p>Níže jsou chronologicky seřazeny mé poslední projekty. Ať už soukromé nebo tímové z práce v M7. Mrknout můžete i na můj <a href="http://github.com/kongzii" target="_blank">github</a>.</p>
+      <a class="resume-link" href="http://cv.jung.ninja" target="_blank">životopis</a>
     </div>
 
     <carousel-with-buttons class="carousel"  />
@@ -43,6 +44,7 @@ export default {
 
 .home {
   .about {
+    position: relative;
 
     @media (min-width: 1000px) {
       padding: 0 50px;
@@ -58,6 +60,30 @@ export default {
       font-size: 50px;
       line-height: 50px;
       margin: 0;
+    }
+
+    .resume-link {
+      font-weight: bold;
+      font-size: 15px;
+      transition: .25s;
+      margin: 0;
+      text-transform: uppercase;
+
+      @media (min-width: 650px) {
+        position: absolute;
+        top: 10%;
+        right: 0;
+      }
+
+      @media (min-width: 1000px) {
+        right: 50px;
+      }
+
+      &:hover {
+        // color: white;
+        // text-shadow: 0 0 5px fade(grey, 50%);
+        // text-decoration: none;
+      }
     }
 
     h2 {

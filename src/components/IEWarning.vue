@@ -4,6 +4,7 @@
       Unfortunately IE doesn't support transform: preserve-3d property yet. <br /><br />
       Please check at supported browsers like <b>Chrome</b> or <b>Firefox</b>, thanks.
       <br />
+      <br />
       <b>Or you can at least download PDF version of my CV</b> <a :href="cvLink" class="download">here</a>.
     </article>
   </section>
