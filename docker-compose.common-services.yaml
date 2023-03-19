@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  template:
+    build:
+      context: .
+      args:
+        USER_ID: "$USER_ID"
+        GROUP_ID: "$GROUP_ID"
+    image: portfolio
+    volumes:
+      - ./:/app
+    env_file:
+      - .env

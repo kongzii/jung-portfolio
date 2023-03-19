@@ -1,0 +1,17 @@
+FROM --platform=linux/amd64 node:lts-alpine
+
+RUN npm install -g http-server
+
+WORKDIR /app
+
+COPY portfolio/package*.json ./
+
+RUN npm install --force
+
+COPY portfolio/ .
+
+RUN npm run build
+
+EXPOSE 8080
+
+CMD [ "http-server", "-a", "0.0.0.0", "-p", "8080", "dist" ]

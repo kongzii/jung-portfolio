@@ -1,0 +1,11 @@
+html {
+  box-sizing: border-box;
+  font-family: 'PT Sans', Georgia, serif;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  overflow-x: hidden;
+}

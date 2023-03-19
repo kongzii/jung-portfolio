@@ -1,0 +1,32 @@
+@import './base.css';
+
+:root {
+
+    --color-main-background: white;
+    --color-white: white;
+    --color-black: black;
+    --color-bg-buttons: cornflowerblue;
+    --color-bg-chat: #f0f2f5;
+    --color-bg-recipient: #0084ff;
+    --color-router-active-link: #e7f3ff;
+    --color-router-hover-link: #e7f3ff5c;
+    --bubble-text-color: black;
+    --bubble-text-color-recipient: white;
+}
+
+:root[theme='dark'] {
+    --bubble-text-color: white;
+    --bubble-text-color-recipient: white;
+    --color-main-background: #242526;
+    --color-white: #040404;
+    --color-black: white;
+    --color-bg-buttons: #0084ff;
+    --color-bg-chat: #3e4042;
+    --color-bg-recipient: #0084ff;
+    --color-router-active-link: #242f3c;
+    --color-router-hover-link: #e7f3ff5c;
+}
+
+body {
+    background-color: var(--color-main-background);
+}

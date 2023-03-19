@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  raw:
+    extends:
+      file: docker-compose.common-services.yaml
+      service: template
+    profiles: [ "ignore" ]
+
+  app:
+    extends:
+      file: docker-compose.common-services.yaml
+      service: template
+    command: npm run --prefix /app/portfolio dev
+    ports:
+      - 4000:5173
+
+  deployment:
+    build:
+      context: .
+      dockerfile: Dockerfile.deployment
+    image: portfolio-deployment:app
+    ports:
+      - 4000:8080
