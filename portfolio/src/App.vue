@@ -7,7 +7,12 @@ import '@tensorflow/tfjs-backend-cpu';
 <template>
   <header>
     <div class="wrapper">
-      <!-- <img class="badge-aws-practitioner" src="/AWS-Certified-Cloud-Practitioner_badge.png" width="100" height="100" /> -->
+      <a href="https://www.credly.com/badges/2a77dc85-9063-4801-bc19-0690f33d43cd/public_url" target="_blank">
+        <img class="badge-aws-developer" src="/AWS-Certified-Developer-Associate_badge.png" width="100" height="100" />
+      </a>
+      <a href="https://www.credly.com/badges/ec6ba700-c48f-43fe-abac-738f67066d6f/public_url" target="_blank">
+        <img class="badge-aws-practitioner" src="/AWS-Certified-Cloud-Practitioner_badge.png" width="100" height="100" />
+      </a>
       <nav>
         <RouterLink to="/" class="link">Resume Bot</RouterLink>
         <RouterLink to="/game" class="link">Tic Tac Toe</RouterLink>
@@ -69,9 +74,17 @@ header {
   width: 80vw;
 }
 
-.badge-aws-practitioner {
+.badge-aws-developer {
   position: absolute;
   top: 25px;
+  right: 25px;
+  width: 100px;
+  height: 100px;
+}
+
+.badge-aws-practitioner {
+  position: absolute;
+  top: 150px;
   right: 25px;
   width: 100px;
   height: 100px;
@@ -84,9 +97,15 @@ header {
     text-align: center;
   }
 
+  .badge-aws-developer {
+    width: 50px;
+    height: 50px;
+  }
+
   .badge-aws-practitioner {
     width: 50px;
     height: 50px;
+    top: 85px;
   }
 }
 

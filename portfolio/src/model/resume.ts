@@ -44,6 +44,8 @@ export const resumeArrayish = [
     [["leadiq", "responsibility at leadiq", "work at leadiq", "leadiq.com"], [
         `<a href="https://leadiq.com/" target="_blank">Senior Machine Learning Engineer at leadiQ, San Francisco Bay Area</a><br/>`,
 
+        `• Deployed models on Databricks' serverless model endpoints.`,
+        `• Fine-tuned and served GPT3 models.`,
         `• Creating GPT-based sales email writer with human-beating quality.`,
         `• Created prompts to get desired behaviour from pretrained one/few shot models.`,
     ]],
