@@ -7,11 +7,17 @@ import '@tensorflow/tfjs-backend-cpu';
 <template>
   <header>
     <div class="wrapper">
-      <a href="https://www.credly.com/badges/2a77dc85-9063-4801-bc19-0690f33d43cd/public_url" target="_blank">
-        <img class="badge-aws-developer" src="/AWS-Certified-Developer-Associate_badge.png" width="100" height="100" />
+      <a class="badge-aws-ml" href="https://www.credly.com/badges/a27f28fe-9490-459d-a61b-0325b25e8533/public_url"
+        target="_blank">
+        <img class="badge-img" src="/AWS-Certified-Machine-Learning-Speciality.png" width="100" height="100" />
       </a>
-      <a href="https://www.credly.com/badges/ec6ba700-c48f-43fe-abac-738f67066d6f/public_url" target="_blank">
-        <img class="badge-aws-practitioner" src="/AWS-Certified-Cloud-Practitioner_badge.png" width="100" height="100" />
+      <a class="badge-aws-developer" href="https://www.credly.com/badges/2a77dc85-9063-4801-bc19-0690f33d43cd/public_url"
+        target="_blank">
+        <img class="badge-img" src="/AWS-Certified-Developer-Associate_badge.png" width="100" height="100" />
+      </a>
+      <a class="badge-aws-practitioner"
+        href="https://www.credly.com/badges/ec6ba700-c48f-43fe-abac-738f67066d6f/public_url" target="_blank">
+        <img class="badge-img" src="/AWS-Certified-Cloud-Practitioner_badge.png" width="100" height="100" />
       </a>
       <nav>
         <RouterLink to="/" class="link">Resume Bot</RouterLink>
@@ -74,20 +80,36 @@ header {
   width: 80vw;
 }
 
-.badge-aws-developer {
+.badge-aws-ml {
   position: absolute;
   top: 25px;
   right: 25px;
   width: 100px;
   height: 100px;
+  padding: 0;
 }
 
-.badge-aws-practitioner {
+.badge-aws-developer {
   position: absolute;
   top: 150px;
   right: 25px;
   width: 100px;
   height: 100px;
+  padding: 0;
+}
+
+.badge-aws-practitioner {
+  position: absolute;
+  top: 275px;
+  right: 25px;
+  width: 100px;
+  height: 100px;
+  padding: 0;
+}
+
+.badge-img {
+  width: 100%;
+  height: 100%;
 }
 
 
@@ -97,15 +119,21 @@ header {
     text-align: center;
   }
 
+  .badge-aws-ml {
+    width: 50px;
+    height: 50px;
+  }
+
   .badge-aws-developer {
     width: 50px;
     height: 50px;
+    top: 85px;
   }
 
   .badge-aws-practitioner {
     width: 50px;
     height: 50px;
-    top: 85px;
+    top: 145px;
   }
 }
 
