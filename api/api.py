@@ -13,7 +13,11 @@ resume = " ".join(
     " ".join(
         [
             page.extract_text()
-            for page in PdfReader("portfolio/public/Peter_Jung_CV_extended.pdf").pages
+            for page in PdfReader(
+                "portfolio/public/Peter_Jung_CV_extended.pdf"
+                if os.path.isfile("portfolio/public/Peter_Jung_CV_extended.pdf")
+                else "public/Peter_Jung_CV_extended.pdf"
+            ).pages
         ]
     ).split()
 )

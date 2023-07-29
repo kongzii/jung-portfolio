@@ -364,11 +364,15 @@ export default {
 
 .choice button {
   border: none;
-  color: white;
+  color: var(--color-black);
   border-radius: 10px;
   background-color: var(--color-router-hover-link);
   cursor: pointer;
   padding: 15px 15px;
   width: 200px;
+}
+
+.about {
+  color: var(--bubble-text-color);
 }
 </style>
