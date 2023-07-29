@@ -109,7 +109,7 @@ Answer:
         )
         answer = dict(response.choices[0]["message"])
         MEMORY[user_id] = messages + [answer]
-        pprint(MEMORY[user_id])
+        # pprint(MEMORY[user_id])
         return {"answer": answer["content"]}
 
     return app
