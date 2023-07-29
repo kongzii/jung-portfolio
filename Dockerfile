@@ -55,3 +55,6 @@ COPY pyproject.toml poetry.lock* /app/
 
 RUN poetry install
 RUN npm install create-vue@3.5.0
+
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt

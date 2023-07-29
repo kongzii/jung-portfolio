@@ -6,7 +6,18 @@ import Bubble from './Bubble.vue';
 
 <template>
   <div class="discussion-wrapper">
-    <loading v-model:active="isLoading" :can-cancel="true" :is-full-page="true" />
+    <loading v-model:active="isLoadingOrFetching" :can-cancel="true" :is-full-page="true" />
+    <div class="choice">
+      <div class="version" :class="{ selected: version == 'js' }" @click="version = 'js'">
+        <button>Browser-native version</button>
+        <p class="about">Less capable, but Javascript based method. Running the model on Tensorflow.js directly in your
+          browser.</p>
+      </div>
+      <div class="version" :class="{ selected: version == 'llm' }" @click="version = 'llm'">
+        <button>LLM version</button>
+        <p class="about">More capable version, calling backend server with LLM. </p>
+      </div>
+    </div>
     <div v-if="questionsAndAnswers" class="discussion">
       <Bubble v-for="x in questionsAndAnswers" :text="x.message" :is-recipient="x.isRecipient" />
     </div>
@@ -34,6 +45,9 @@ export default {
   },
   data() {
     return {
+      userId: Math.random().toString(),
+      version: "llm",
+      isFetching: false,
       isLoading: true,
       disableAsking: false,
       questionsAndAnswers: [] as { [myKey: string]: string | boolean }[],
@@ -49,6 +63,9 @@ export default {
     };
   },
   computed: {
+    isLoadingOrFetching() {
+      return this.isLoading || this.isFetching;
+    },
     inputText() {
       if (this.disableAsking) {
         return "Please wait for the generation to finish";
@@ -74,7 +91,7 @@ export default {
   methods: {
     writeGreeting() {
       const greetings = [
-        "Hello!", "Hello there!", "Bonjour", "Coucou", "Hi", "Good day"
+        "Hello!", "Hello there!", "Bonjour", "Coucou", "Hi", "Good day", "Greetings, human!"
       ]
       const ninjas = [
         "ninja1.png",
@@ -84,7 +101,25 @@ export default {
         "ninja5.png",
         "ninja6.png",
       ]
-      const introductionsStories = [
+      const introductionsStoriesLLM = [
+        `I am a resume bot developed by Peter Jung.
+      I have access to Peter's resume and can provide information about his experiences, skills, and projects.
+      I am here to assist you with any questions you may have about Peter's background and qualifications.`,
+        `I am the magnificent Resume Bot, created by the Peter Jung.
+      I possess the power to showcase Peter's skills, experiences, and projects.
+      With my robotic prowess, I am here to assist you in unraveling the mysteries of Peter's qualifications.
+      So, prepare yourself for a journey through the realm of resumes, where I shall be your trusty guide. Let the adventure begin!`,
+        `I am the one and only Resume Bot, forged in the digital depths by the man known as Peter Jung.
+      With my lightning-fast algorithms and encyclopedic knowledge of Peter's resume,
+      I am here to dazzle you with his exceptional skills, experiences, and projects.
+      Prepare to be amazed as we embark on a quest to uncover the secrets of Peter's professional prowess.
+      Together, we shall conquer the realm of employment and forge a path to success!`,
+        `I am an AI-powered Resume Bot, meticulously crafted by Peter Jung.
+      It is my purpose to provide you with comprehensive insights into Peter's qualifications, experiences, and projects.
+      With utmost professionalism, I am here to assist you in evaluating Peter's suitability for the desired role.
+      Please feel free to inquire about any specific details or areas of interest, and I shall endeavor to provide you with accurate and concise information.`,
+      ];
+      const introductionsStoriesJS = [
         `I am a Resume Bot Ninja created by Peter.
       Please, do not expect ChatGPT-like narratives from me.
       Rather, I am powered by TensorFlow.js, a deep learning framework that runs a neural network trained for question answering directly in your browser.
@@ -122,7 +157,7 @@ export default {
       this.writeSlowly([
         getRandomFromArray(greetings),
         `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
-        getRandomFromArray(introductionsStories),
+        getRandomFromArray(this.version == 'js' ? introductionsStoriesJS : introductionsStoriesLLM),
         `If you are not able to get the answer you seek for, please head to the <a href="/resume">Classic Resume page</a>.`,
         `And if you want a bit of fun, check our <a href="/game">Tic Tac Toe</a> game with AI opponent!`,
         "Let me start by asking a very simple question for you:",
@@ -175,33 +210,45 @@ export default {
       this.questionsAndAnswers.push({ "message": question, "isRecipient": true });
       await nextTick();
 
-      const questionEmbedding = await this.embedText(question);
+      var formattedBestAnswer = "So sorry, something went wrong. Please try again later.";
 
-      var maxSimilarity = -2.0;
-      var bestAnswers = [] as string[];
+      if (this.version == "js") {
+        const questionEmbedding = await this.embedText(question);
 
-      for (let row of resumeArrayish) {
-        const keys = row[0];
-        const values = row[1];
+        var maxSimilarity = -2.0;
+        var bestAnswers = [] as string[];
 
-        for (let key of keys) {
-          const keyEmbedding = await this.embedTextCached(key);
-          const similarity = dotProduct(questionEmbedding, keyEmbedding);
+        for (let row of resumeArrayish) {
+          const keys = row[0];
+          const values = row[1];
 
-          if (similarity > maxSimilarity) {
-            maxSimilarity = similarity;
-            bestAnswers = values;
+          for (let key of keys) {
+            const keyEmbedding = await this.embedTextCached(key);
+            const similarity = dotProduct(questionEmbedding, keyEmbedding);
+
+            if (similarity > maxSimilarity) {
+              maxSimilarity = similarity;
+              bestAnswers = values;
+            }
           }
         }
+
+        if (maxSimilarity < 0.1)
+          bestAnswers = [
+            "Sorry, I don't know what you mean, coud you rephrase?",
+            "You can also try simplify the question, or provide just a few keywords, like 'experience' or 'projects'",
+          ];
+
+        formattedBestAnswer = bestAnswers.join("<br/>");
+      } else {
+        this.isFetching = true;
+        let request = await fetch(`${api_host}/ask/?user_id=${this.userId}&question=${question}`, {
+          method: "GET",
+        });
+        let response = await request.json();
+        formattedBestAnswer = response.answer.split("\n").join("<br/>");
+        this.isFetching = false;
       }
-
-      if (maxSimilarity < 0.1)
-        bestAnswers = [
-          "Sorry, I don't know what you mean, coud you rephrase?",
-          "You can also try simplify the question, or provide just a few keywords, like 'experience' or 'projects'",
-        ];
-
-      const formattedBestAnswer = bestAnswers.join("<br/>");
 
       console.info(`Question: ${question}, best similarity ${maxSimilarity}, best answer: ${formattedBestAnswer}`);
 
@@ -209,6 +256,20 @@ export default {
 
       this.scrollToBottom();
       this.suggestQuestions();
+
+      fetch(`${api_host}/log/`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          user_id: this.userId,
+          question: question,
+          answer: formattedBestAnswer.replace(/<br\/>/g, "\n"),
+          version: this.version,
+        }),
+      });
     },
 
   }
@@ -221,7 +282,7 @@ export default {
 
 .discussion {
   width: 80vw;
-  margin: 0 auto 0 auto;
+  margin: 20px auto 0 auto;
 
   display: flex;
   flex-flow: column wrap;
@@ -268,5 +329,46 @@ export default {
 .disabled {
   pointer-events: none;
   opacity: 0.3;
+}
+
+.choice {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.choice .version {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 260px;
+  margin: 0 15px;
+  text-align: justify;
+  color: white;
+  cursor: pointer;
+  opacity: 40%;
+}
+
+.choice .version:hover {
+  opacity: 80%;
+}
+
+.choice .version.selected {
+  opacity: 100%;
+}
+
+.choice .version.selected button {
+  background-color: var(--color-router-active-link);
+  font-weight: bold;
+}
+
+.choice button {
+  border: none;
+  color: white;
+  border-radius: 10px;
+  background-color: var(--color-router-hover-link);
+  cursor: pointer;
+  padding: 15px 15px;
+  width: 200px;
 }
 </style>

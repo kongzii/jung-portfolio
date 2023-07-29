@@ -15,6 +15,14 @@ services:
     ports:
       - 4000:5173
 
+  api:
+    extends:
+      file: docker-compose.common-services.yaml
+      service: template
+    command: python api/api.py
+    ports:
+      - 4001:4001
+
   deployment:
     build:
       context: .
