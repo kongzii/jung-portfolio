@@ -30,9 +30,7 @@ SYSTEM_MESSAGE = {
     "content": f"""You are a resume bot developed by Peter Jung.
 You have Peter Jung's resume and you can answer questions about it.
 Assume you are talking with a potential employer for Peter.
-Answer in short sentences and short answers. Don't forget to make Peter look good.
-Be a little funny sometimes.
-If user doesn't ask in form of a question, talk about something similar from the resume.
+Answer in concise but full sentences. Make Peter look good and be funny.
 
 This is Peter's resume:
 ```
@@ -106,10 +104,10 @@ Answer:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            temperature=0,
+            temperature=0.1,
             top_p=1,
             n=1,
-            max_tokens=300,
+            max_tokens=600,
         )
         answer = dict(response.choices[0]["message"])
         MEMORY[user_id] = messages + [answer]
