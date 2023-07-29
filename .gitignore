@@ -5,3 +5,4 @@ node_modules
 .env
 *.img
 .DS_Store
+__pycache__
