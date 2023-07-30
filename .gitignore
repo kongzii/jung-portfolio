@@ -7,5 +7,5 @@ node_modules
 __pycache__
 venv
 .backup
-output
+output*
 class_data_dir
