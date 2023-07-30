@@ -84,6 +84,7 @@ export default {
 
 img {
   border-radius: 22px;
+  margin-top: 25px;
 }
 
 .Ask {
