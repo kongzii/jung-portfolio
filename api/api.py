@@ -1,4 +1,6 @@
 import os
+import base64
+import random
 import fastapi
 import uvicorn
 import openai
@@ -114,6 +116,32 @@ Answer:
         MEMORY[user_id] = messages + [answer]
         # pprint(MEMORY[user_id])
         return {"answer": answer["content"]}
+
+    @app.get("/photo/")
+    def _photo(
+        user_id: str,
+        prompt: str,
+    ):
+        image_dir = "photobooth/jung" if os.path.isdir("photobooth/jung") else "jung"
+        choices = os.listdir(image_dir)
+        chosen = random.choice(choices)
+        with open(f"{image_dir}/{chosen}", "rb") as f:
+            response = openai.Image.create_edit(
+                image=f,
+                prompt=prompt,
+                n=1,
+                size="512x512",
+            )
+        image_url = response.data[0]["url"]
+        # image_url = "https://oaidalleapiprodscus.blob.core.windows.net/private/org-jSJe7fmVAf6zXbI4porb6Ttl/user-cQ4Q7qDCTNdUwM8zGkRyoVaw/img-iMNN5RgixmEN0nD22SsHe7xK.png?st=2023-07-30T14%3A03%3A26Z&se=2023-07-30T16%3A03%3A26Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-07-30T08%3A36%3A40Z&ske=2023-07-31T08%3A36%3A40Z&sks=b&skv=2021-08-06&sig=OaC7wU4Mnh5XfueoguIt2GhTiW2oJU9vl7q6J%2Buz%2Bvs%3D"
+        send_slack_message(
+            f"""From: `{user_id}`
+Prompt: `{prompt}`
+Answer: {image_url}"""
+        )
+        content = requests.get(image_url).content
+        base64_encoded_image = base64.b64encode(content).decode("utf-8")
+        return {"image": base64_encoded_image}
 
     return app
 

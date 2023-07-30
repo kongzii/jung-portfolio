@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-    defaultText?: string
+    defaultText?: string,
+    buttonText?: string
 }>()
 </script>
 
@@ -9,7 +10,7 @@ defineProps<{
         <span class="point">></span>
         <input class="input" v-model="text" v-on:keyup.enter="onEnter" v-if="!defaultText" />
         <span class="span-input" v-else>{{ defaultText }}</span>
-        <div class="button" @click="onEnter">Ask</div>
+        <div class="button" @click="onEnter"><span v-if="!buttonText">Ask</span><span v-else>{{ buttonText }}</span></div>
     </div>
 </template>
 

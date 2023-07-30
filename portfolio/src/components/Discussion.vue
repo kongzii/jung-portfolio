@@ -160,6 +160,7 @@ export default {
         getRandomFromArray(this.version == 'js' ? introductionsStoriesJS : introductionsStoriesLLM),
         `If you are not able to get the answer you seek for, please head to the <a href="/resume">Classic Resume page</a>.`,
         `And if you want a bit of fun, check our <a href="/game">Tic Tac Toe</a> game with AI opponent!`,
+        `Or head to the <a href="/photobooth">Photobooth</a> to have fun with my Photobooth!`,
         "Let me start by asking a very simple question for you:",
       ], false, 0, false, 0, getRandomFromArray(["Please list Peter's projects", "Please tell me about Peter's work experience"]));
     },

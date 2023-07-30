@@ -21,6 +21,7 @@ import '@tensorflow/tfjs-backend-cpu';
       </a>
       <nav>
         <RouterLink to="/" class="link">Resume Bot</RouterLink>
+        <RouterLink to="/photobooth" class="link">Photobooth</RouterLink>
         <RouterLink to="/game" class="link">Tic Tac Toe</RouterLink>
         <RouterLink to="/resume" class="link">Classic Resume</RouterLink>
         <a class="link" target="_blank" href="https://www.linkedin.com/in/jung-ninja/">LinkedIn</a>
@@ -76,8 +77,8 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  max-width: 785px;
-  width: 80vw;
+  max-width: 885px;
+  width: 85vw;
 }
 
 .badge-aws-ml {
