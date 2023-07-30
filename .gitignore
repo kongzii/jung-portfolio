@@ -3,6 +3,9 @@ node_modules
 .history
 .vscode
 .env
-*.img
 .DS_Store
 __pycache__
+venv
+.backup
+output
+class_data_dir
