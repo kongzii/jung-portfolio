@@ -23,6 +23,17 @@ services:
     ports:
       - 4001:4001
 
+  tic:
+    extends:
+      file: docker-compose.common-services.yaml
+      service: template
+    build:
+      context: .
+      dockerfile: Dockerfile.tictactoe
+    image: portfolio:tictactoe
+    ports:
+      - 4080:80
+
   deployment:
     build:
       context: .

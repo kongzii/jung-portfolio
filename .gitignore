@@ -9,3 +9,14 @@ venv
 .backup
 output*
 class_data_dir
+/.internal
+/build
+.externalToolBuilders
+Thumbs.db
+.lock-wscript
+*.pyc
+.project
+.cproject
+builtins
+build
+js-web

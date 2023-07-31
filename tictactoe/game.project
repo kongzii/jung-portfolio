@@ -1,0 +1,29 @@
+[bootstrap]
+main_collection = /main/main.collectionc
+render = /builtins/render/default.renderc
+
+[script]
+shared_state = 1
+
+[display]
+width = 500
+height = 500
+high_dpi = 1
+
+[project]
+title = TicTacToe
+dependencies = 
+write_log = 0
+publisher = Peter Jung
+developer = Peter Jung
+
+[physics]
+gravity_y = 0.0
+
+[html5]
+scale_mode = no_scale
+heap_size = 1024
+show_fullscreen_button = 0
+show_made_with_defold = 0
+show_console_banner = 0
+
