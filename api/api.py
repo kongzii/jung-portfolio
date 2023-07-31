@@ -107,10 +107,10 @@ Answer:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            temperature=0.1,
+            temperature=0.5,
             top_p=1,
             n=1,
-            max_tokens=600,
+            max_tokens=500,
         )
         answer = dict(response.choices[0]["message"])
         MEMORY[user_id] = messages + [answer]
