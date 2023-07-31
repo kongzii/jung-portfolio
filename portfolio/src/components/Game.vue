@@ -34,7 +34,7 @@ export default {
     computed: {
         ticTacToeUrl() {
             const protocol = location.protocol;
-            return `${protocol}//tictactoe-l27mw.ondigitalocean.app`;
+            return `${protocol}//tictactoe.jung.ninja`;
         }
     },
     methods: {
