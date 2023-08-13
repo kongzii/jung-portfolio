@@ -8,7 +8,7 @@ import Bubble from './Bubble.vue';
   <div class="discussion-wrapper">
     <loading v-model:active="isLoadingOrFetching" :can-cancel="true" :is-full-page="true" />
     <div class="choice">
-      <div class="version" :class="{ selected: version == 'js' }" @click="version = 'js'">
+      <div class="version" :class="{ selected: version == 'js' }" @click="switchToJS">
         <button>Browser-native version</button>
         <p class="about">Less capable, but Javascript based method. Running the model on Tensorflow.js directly in your
           browser.</p>
@@ -166,12 +166,15 @@ export default {
         "Let me start by asking a very simple question for you:",
       ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
     },
-    async embedText(text: string) {
+    async switchToJS() {
       if (this.model == null) {
         this.isLoading = true;
         this.model = Object.freeze(await use.load());
         this.isLoading = false;
       }
+      this.version = 'js';
+    },
+    async embedText(text: string) {
       return (await Promise.all([(await this.model!.embed(text)).array()]))[0][0];
     },
     async embedTextCached(text: string) {
