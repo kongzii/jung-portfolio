@@ -78,7 +78,6 @@ export default {
     },
   },
   async created() {
-    this.model = Object.freeze(await use.load());
     this.isLoading = false;
   },
   watch: {
@@ -168,6 +167,11 @@ export default {
       ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
     },
     async embedText(text: string) {
+      if (this.model == null) {
+        this.isLoading = true;
+        this.model = Object.freeze(await use.load());
+        this.isLoading = false;
+      }
       return (await Promise.all([(await this.model!.embed(text)).array()]))[0][0];
     },
     async embedTextCached(text: string) {
