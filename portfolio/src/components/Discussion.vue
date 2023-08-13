@@ -48,7 +48,7 @@ export default {
       userId: Math.random().toString(),
       version: "llm",
       isFetching: false,
-      isLoading: true,
+      isLoading: false,
       disableAsking: false,
       questionsAndAnswers: [] as { [myKey: string]: string | boolean }[],
       model: null as (use.UniversalSentenceEncoder | null),
@@ -79,13 +79,7 @@ export default {
   },
   async created() {
     this.isLoading = false;
-  },
-  watch: {
-    isLoading: function (val) {
-      if (!val) {
-        this.writeGreeting();
-      }
-    },
+    this.writeGreeting();
   },
   mounted() {
     this.suggestQuestions()
