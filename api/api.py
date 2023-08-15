@@ -44,6 +44,20 @@ This is Peter's resume:
 MEMORY = {}
 
 
+def get_ip_info(ip: str) -> str:
+    try:
+        response = requests.get(f"https://ipinfo.io/{ip}/json")
+        response_json = response.json()
+        return ", ".join(f"{k}={v}" for k, v in response_json.items())
+    except Exception as e:
+        return f"Error: {e}"
+
+
+def get_client_info(request: fastapi.Request) -> str:
+    x_real_ip = request.headers.get("X-Real-IP")
+    return f"""{get_ip_info(x_real_ip)}""" if x_real_ip else "Unknown"
+
+
 def send_slack_message(text: str) -> None:
     SLACK_TOKEN = os.environ.get("SLACK_TOKEN")
     SLACK_NOTIFY_USER = os.environ.get("SLACK_NOTIFY_USER")
@@ -82,13 +96,14 @@ def create_app():
 
     @app.post("/log/")
     def _log(
+        request: fastapi.Request,
         user_id: str = fastapi.Body(..., embed=True),
         version: str = fastapi.Body(..., embed=True),
         question: str = fastapi.Body(..., embed=True),
         answer: str = fastapi.Body(..., embed=True),
     ):
         send_slack_message(
-            f"""From: `{user_id}`
+            f"""From: `{user_id}` ({get_client_info(request)})
 Version: `{version}`
 Question: `{question}`
 Answer:
@@ -119,6 +134,7 @@ Answer:
 
     @app.get("/photo/")
     def _photo(
+        request: fastapi.Request,
         user_id: str,
         prompt: str,
     ):
@@ -135,7 +151,7 @@ Answer:
         image_url = response.data[0]["url"]
         # image_url = "https://oaidalleapiprodscus.blob.core.windows.net/private/org-jSJe7fmVAf6zXbI4porb6Ttl/user-cQ4Q7qDCTNdUwM8zGkRyoVaw/img-iMNN5RgixmEN0nD22SsHe7xK.png?st=2023-07-30T14%3A03%3A26Z&se=2023-07-30T16%3A03%3A26Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-07-30T08%3A36%3A40Z&ske=2023-07-31T08%3A36%3A40Z&sks=b&skv=2021-08-06&sig=OaC7wU4Mnh5XfueoguIt2GhTiW2oJU9vl7q6J%2Buz%2Bvs%3D"
         send_slack_message(
-            f"""From: `{user_id}`
+            f"""From: `{user_id}` ({get_client_info(request)})
 Prompt: `{prompt}`
 Answer: {image_url}"""
         )
