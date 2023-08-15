@@ -54,8 +54,12 @@ def get_ip_info(ip: str) -> str:
 
 
 def get_client_info(request: fastapi.Request) -> str:
-    x_real_ip = request.headers.get("X-Real-IP")
-    return f"""{get_ip_info(x_real_ip)}""" if x_real_ip else "Unknown"
+    x_real_ip = request.headers.get("do-connecting-ip")
+    return (
+        f"""{x_real_ip=}, {get_ip_info(x_real_ip)}"""
+        if x_real_ip
+        else f"Unknown: `{x_real_ip}`"
+    )
 
 
 def send_slack_message(text: str) -> None:
