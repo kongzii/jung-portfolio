@@ -25,6 +25,7 @@ import '@tensorflow/tfjs-backend-cpu';
         <RouterLink to="/game" class="link">Tic Tac Toe</RouterLink>
         <RouterLink to="/resume" class="link">Classic Resume</RouterLink>
         <a class="link" target="_blank" href="https://www.linkedin.com/in/jung-ninja/">LinkedIn</a>
+        <a class="link" target="_blank" href="https://github.com/kongzii/">GitHub</a>
         <a class="link" href="mailto:peter@jung.ninja">Contact Me</a>
         <a class="link switch-theme" @click="switchTheme">Use {{ darkTheme ? "Light" : "Dark" }} Theme</a>
       </nav>

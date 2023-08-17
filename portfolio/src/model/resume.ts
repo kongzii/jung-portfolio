@@ -1,3 +1,15 @@
+/*
+    This file contains the resume data.
+    Question-answering model will embed the question and look for the most similar answer based on the phrases below and answer the assigned response.
+
+    The format is as follows:
+    [
+        [
+            ["question1", "question2", "question3"], // All questions that are closests to one of these phrases will be assigned the same response
+            ["answer", "potentionally", "over", "multiple", "lines"]  // Each item will be written on a new line
+        ],
+    ]
+*/
 export const resumeArrayish = [
     [["hello", "hi", "hey", "whats up", "good morning", "good day"], ["Hello!"]],
     [["name", "full name"], ["Peter Jung"]],
@@ -132,7 +144,6 @@ export const resumeArrayish = [
         "• FastAPI, Flask, GraphQL - For back-end development",
         "• Mypy - Type checking for Python",
         "• Vue.js - When in need of a front-end",
-        // "• ",
     ]],
     [["age", "how old", "date of birth"], [
         "Sorry, this information is not available.",

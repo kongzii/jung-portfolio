@@ -53,10 +53,10 @@ export default {
       questionsAndAnswers: [] as { [myKey: string]: string | boolean }[],
       model: null as (use.UniversalSentenceEncoder | null),
       exampleQuestions: [
-        ["Where Peter studied?", "What degree he has?"],
+        ["Where he studied?", "What degree he has?"],
         ["Work experience?", "What he worked on?"],
         ["How many years of experience does he have?", "Years of experience"],
-        ["Please list Peter's projects", "Open source projects", "Open source"],
+        ["Please list his projects", "Open source projects", "Open source"],
         ["We are looking for mlops engineer, is he a good a fit?"],
         ["Can he deliver production-ready models?"],
         ["Does he have leading skills?"],

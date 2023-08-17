@@ -11,16 +11,16 @@ COPY requirements.txt ./
 RUN npm install --force
 RUN python -m pip install -r requirements.txt
 
-COPY portfolio/ .
+COPY portfolio/ portfolio/
 ENV VITE_API_HOST "https://api.jung.ninja"
-RUN npm run build
+RUN cd portfolio/ && npm run build
 
 COPY nginx.conf /etc/nginx/http.d/portfolio.conf
-COPY api/ .
-COPY photobooth/ .
+COPY api/ api/
+COPY photobooth/ photobooth/
 COPY ./tictactoe/js-web/TicTacToe /usr/share/nginx/tictactoe
 
 EXPOSE 4000
 EXPOSE 4001
 
-CMD ["/bin/sh", "-c", "http-server -a 0.0.0.0 -p 4000 dist & python api.py & nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "http-server -a 0.0.0.0 -p 4000 portfolio/dist & python api/api.py & nginx -g 'daemon off;'"]
