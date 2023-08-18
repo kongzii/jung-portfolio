@@ -300,12 +300,6 @@ export default {
   margin-top: 0.5em;
 }
 
-@media (max-width: 1000px) {
-  .examples {
-    flex-direction: column;
-  }
-}
-
 .examples>div {
   margin: 0.25em 1em;
   padding: 0.5em 1em;
@@ -340,6 +334,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  max-width: 95vw;
 }
 
 .choice .version {
@@ -369,8 +364,8 @@ export default {
 
 .choice button {
   border: none;
-  color: var(--color-black);
   border-radius: 10px;
+  color: var(--color-black);
   background-color: var(--color-router-hover-link);
   cursor: pointer;
   padding: 15px 15px;
@@ -379,5 +374,16 @@ export default {
 
 .about {
   color: var(--bubble-text-color);
+}
+
+
+@media (max-width: 1000px) {
+  .examples {
+    flex-direction: column;
+  }
+
+  .choice button {
+    width: unset;
+  }
 }
 </style>
