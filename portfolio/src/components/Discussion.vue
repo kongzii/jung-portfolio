@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      welcomeGenerationDone: false,
       userId: Math.random().toString(),
       version: "llm",
       isFetching: false,
@@ -159,6 +160,7 @@ export default {
         `Or head to the <a href="/photobooth">Photobooth</a> to have fun with some image generation!`,
         "Let me start by asking a very simple question for you:",
       ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
+      this.welcomeGenerationDone = true;
     },
     async switchToJS() {
       if (this.model == null) {
@@ -198,7 +200,8 @@ export default {
       this.questionsAndAnswers.push({ "message": cropped, "isRecipient": right });
 
       if (charIndex < texts[textIndex].length) {
-        await sleep(Math.floor(Math.random() * 5))
+        // if (!this.welcomeGenerationDone)
+        await sleep(Math.floor(Math.random() * 1))
         this.writeSlowly(texts, right, charIndex + 1, true, textIndex, ask)
       } else if (textIndex < texts.length - 1) {
         this.writeSlowly(texts, right, 0, false, textIndex + 1, ask)
