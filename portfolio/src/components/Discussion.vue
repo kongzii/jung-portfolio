@@ -160,7 +160,6 @@ export default {
         `Or head to the <a href="/photobooth">Photobooth</a> to have fun with some image generation!`,
         "Let me start by asking a very simple question for you:",
       ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
-      this.welcomeGenerationDone = true;
     },
     async switchToJS() {
       if (this.model == null) {
@@ -250,6 +249,9 @@ export default {
         formattedBestAnswer = bestAnswers.join("<br/>");
       } else {
         this.isFetching = true;
+        // Make very first answer that's asked automatically short, for fast feedback to the user.
+        if (!this.welcomeGenerationDone)
+          question = `${question} Please make it short, max 4 sentences.`
         let request = await fetch(`${api_host}/ask/?user_id=${this.userId}&question=${question}`, {
           method: "GET",
         });
@@ -264,6 +266,7 @@ export default {
 
       this.scrollToBottom();
       this.suggestQuestions();
+      this.welcomeGenerationDone = true;
 
       fetch(`${api_host}/log/`, {
         method: "POST",
