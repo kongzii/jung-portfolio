@@ -78,7 +78,7 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  max-width: 885px;
+  max-width: 985px;
   width: 85vw;
 }
 
@@ -146,6 +146,8 @@ a {
   padding: 0.75em 1.25em;
   border-radius: 1em;
   margin: 0.1em 0;
+  text-align: center;
+  vertical-align: center;
 }
 
 a:hover {
