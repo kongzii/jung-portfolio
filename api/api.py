@@ -102,7 +102,9 @@ Answer:
         user_id: str,
         prompt: str,
     ):
-        choices = os.listdir(IMAGE_DIR)
+        choices = [
+            x for x in os.listdir(IMAGE_DIR) if x.endswith(".png") or x.endswith(".jpg")
+        ]
         chosen = random.choice(choices)
         with open(f"{IMAGE_DIR}/{chosen}", "rb") as f:
             response = openai.Image.create_edit(
