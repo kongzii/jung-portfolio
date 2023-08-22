@@ -60,7 +60,6 @@ export default {
         ["Please list his projects", "Open source projects", "Open source"],
         ["We are looking for mlops engineer, is he a good a fit?"],
         ["Can he deliver production-ready models?"],
-        ["Does he have leading skills?"],
       ],
       suggestedQuestions: [] as string[],
       textToEmbedding: precomputedEmebeddings,
