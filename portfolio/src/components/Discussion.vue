@@ -171,6 +171,7 @@ export default {
           "Let me start by asking a very simple question for you:",
         ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
       } else {
+        this.welcomeGenerationDone = true;  // Force full answer
         this.writeSlowly([
           getRandomFromArray(greetings),
           `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
