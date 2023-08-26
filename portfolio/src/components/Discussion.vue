@@ -86,9 +86,13 @@ export default {
   },
   methods: {
     getQuestionFromUrl() {
-      const url = new URL(window.location.href);
-      const question = url.searchParams.get("q");
-      return question;
+      try {
+        const url = new URL(window.location.href);
+        const question = url.searchParams.get("q");
+        return question;
+      } catch {
+        return null;
+      }
     },
     writeGreeting() {
       const greetings = [
