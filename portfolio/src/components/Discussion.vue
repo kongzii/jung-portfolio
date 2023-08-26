@@ -85,6 +85,11 @@ export default {
     this.suggestQuestions()
   },
   methods: {
+    getQuestionFromUrl() {
+      const url = new URL(window.location.href);
+      const question = url.searchParams.get("q");
+      return question;
+    },
     writeGreeting() {
       const greetings = [
         "Hello!", "Hello there!", "Bonjour", "Coucou", "Hi", "Good day", "Greetings, human!"
@@ -150,15 +155,23 @@ export default {
       Plus, since I don't need to access any external APIs, you can enjoy fast response times and complete privacy. And, thanks to my task-focused neural network running in the browser, you don't need to worry about us paying for expensive OpenAI APIs.
       Thanks for using me!`
       ];
-      this.writeSlowly([
-        getRandomFromArray(greetings),
-        `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
-        getRandomFromArray(this.version == 'js' ? introductionsStoriesJS : introductionsStoriesLLM),
-        `If you are not able to get the answer you seek for, please head to the <a href="/resume">Classic Resume page</a>.`,
-        `And if you want a bit of fun, check our <a href="/game">Tic Tac Toe</a> game with AI opponent!`,
-        `Or head to the <a href="/photobooth">Photobooth</a> to have fun with some image generation!`,
-        "Let me start by asking a very simple question for you:",
-      ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
+      let askedQuestionFromUrl = this.getQuestionFromUrl();
+      if (askedQuestionFromUrl == null) {
+        this.writeSlowly([
+          getRandomFromArray(greetings),
+          `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
+          getRandomFromArray(this.version == 'js' ? introductionsStoriesJS : introductionsStoriesLLM),
+          `If you are not able to get the answer you seek for, please head to the <a href="/resume">Classic Resume page</a>.`,
+          `And if you want a bit of fun, check our <a href="/game">Tic Tac Toe</a> game with AI opponent!`,
+          `Or head to the <a href="/photobooth">Photobooth</a> to have fun with some image generation!`,
+          "Let me start by asking a very simple question for you:",
+        ], false, 0, false, 0, getRandomFromArray(getRandomFromArray(this.exampleQuestions)));
+      } else {
+        this.writeSlowly([
+          getRandomFromArray(greetings),
+          `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
+        ], false, 0, false, 0, askedQuestionFromUrl);
+      }
     },
     async switchToJS() {
       if (this.model == null) {
