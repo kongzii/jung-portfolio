@@ -7,6 +7,8 @@ import '@tensorflow/tfjs-backend-cpu';
 <template>
   <header>
     <div class="wrapper">
+      <a class="codementor" target="_blank" href="https://www.codementor.io/@peter610?refer=badge"><img
+          src="https://github.com/kongzii/kongzii/raw/master/im-a-cm-b-2.png" alt="Codementor badge"></a>
       <a class="badge-aws-ml" href="https://www.credly.com/badges/a27f28fe-9490-459d-a61b-0325b25e8533/public_url"
         target="_blank">
         <img class="badge-img" src="/AWS-Certified-Machine-Learning-Speciality.png" width="100" height="100" />
@@ -80,6 +82,19 @@ header {
   justify-content: space-around;
   max-width: 985px;
   width: 85vw;
+}
+
+.codementor {
+  border-radius: 5px;
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  padding: 0;
+}
+
+.codementor img {
+  width: 125px;
+  height: auto;
 }
 
 .badge-aws-ml {
