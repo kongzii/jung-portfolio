@@ -175,7 +175,7 @@ export default {
         this.writeSlowly([
           getRandomFromArray(greetings),
           `<img src="./${getRandomFromArray(ninjas)}" width="100" height="100"></img>`,
-        ], false, 0, false, 0, askedQuestionFromUrl);
+        ], false, 0, false, 0, askedQuestionFromUrl.replace(/_/g, " "));
       }
     },
     async switchToJS() {
