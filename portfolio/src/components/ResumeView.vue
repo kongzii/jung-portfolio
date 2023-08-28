@@ -21,7 +21,7 @@ export default {
     data() {
         return {
             render: true,
-            source: "./Peter_Jung_CV_extended.pdf",
+            source: "./Peter_Jung_CV.pdf",
             windowWidth: window.innerWidth,
         }
     },

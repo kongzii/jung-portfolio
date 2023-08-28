@@ -14,7 +14,7 @@ Two versions of chat-bot that talk about your resume.
 
 The first version is a simple question-answering model, but the cool part is that it runs entirellly on the browser, using TensorFlow.js.
 
-The second version is a more advanced chatbot, using OpenAI's `gpt-3.5-turbo`* model with infromation auto loaded from included PDF at `portfolio/public/Peter_Jung_CV_extended.pdf`.
+The second version is a more advanced chatbot, using OpenAI's `gpt-3.5-turbo`* model with infromation auto loaded from included PDF at `portfolio/public/Peter_Jung_CV.pdf`.
 
 ### Photobooth
 
@@ -37,7 +37,7 @@ A simple game made with [Defold](https://defold.com), it uses MCTS algorithm to 
 
 ### Resume-bot customization
 
-- Replace `portfolio/public/Peter_Jung_CV_extended.pdf` with your resume in PDF format and `SYSTEM_MESSAGE` in `api/api.py` (for the LLM-based chat-bot)
+- Replace `portfolio/public/Peter_Jung_CV.pdf` with your resume in PDF format and `SYSTEM_MESSAGE` in `api/api.py` (for the LLM-based chat-bot)
 - Replace `portfolio/src/model/resume.ts` with your resume in JSON format (for the question-answering chat-bot)
 - Replace pre-written welcome phrases in `portfolio/src/components/Discussion.vue` (there is no need to always generate these)
 
@@ -47,7 +47,7 @@ A simple game made with [Defold](https://defold.com), it uses MCTS algorithm to 
 
 ### Classic resume customization
 
-- Replace `./Peter_Jung_CV_extended.pdf` with name of your resume in `portfolio/src/components/ResumeView.vue`
+- Replace `./Peter_Jung_CV.pdf` with name of your resume in `portfolio/src/components/ResumeView.vue`
 
 ### Hotjar tracking
 
