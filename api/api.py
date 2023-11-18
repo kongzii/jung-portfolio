@@ -120,13 +120,15 @@ Answer:
         user_id: str,
         prompt: str,
     ):
-        content = (
-            random.choice(AS_NINJA_GITHUB_CONTENTS)
-            if user_id == "github"
-            else get_photobooth_image_content(
+        if user_id == "github":
+            content = random.choice(AS_NINJA_GITHUB_CONTENTS)
+            send_slack_message(
+                f"Someone is looking at Github! Serving pre-rendered image. {get_client_info(request)}"
+            )
+        else:
+            content = get_photobooth_image_content(
                 request=request, prompt=prompt, user_id=user_id
             )
-        )
         return Response(content=content, media_type="image/png")
 
     @app.get("/photo/")
