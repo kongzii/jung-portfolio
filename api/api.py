@@ -7,6 +7,7 @@ import uvicorn
 import openai
 import requests
 import logging
+from functools import cache
 from PyPDF2 import PdfReader
 from fastapi import Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,6 +63,13 @@ def create_app():
         allow_headers=["*"],
     )
 
+    AS_NINJA_GITHUB_CONTENTS = [
+        get_photobooth_image_content_cached(
+            index=i, prompt="as a ninja", user_id="github"
+        )
+        for i in range(5)
+    ]
+
     @app.post("/log/")
     def _log(
         request: fastapi.Request,
@@ -112,8 +120,12 @@ Answer:
         user_id: str,
         prompt: str,
     ):
-        content = get_photobooth_image_content(
-            request=request, prompt=prompt, user_id=user_id
+        content = (
+            random.choice(AS_NINJA_GITHUB_CONTENTS)
+            if user_id == "github"
+            else get_photobooth_image_content(
+                request=request, prompt=prompt, user_id=user_id
+            )
         )
         return Response(content=content, media_type="image/png")
 
@@ -132,8 +144,17 @@ Answer:
     return app
 
 
+@cache
+def get_photobooth_image_content_cached(
+    index: int,
+    prompt: str,
+    user_id: str,
+) -> str:
+    return get_photobooth_image_content(None, prompt, user_id)
+
+
 def get_photobooth_image_content(
-    request: fastapi.Request,
+    request: fastapi.Request | None,
     prompt: str,
     user_id: str,
 ) -> str:
@@ -150,7 +171,7 @@ def get_photobooth_image_content(
         )
         image_url = response.data[0]["url"]
         send_slack_message(
-            f"""From: `{user_id}` ({get_client_info(request)})
+            f"""From: `{user_id}` ({get_client_info(request) if request is not None else None})
     Prompt: `{prompt}`
     Answer: {image_url}"""
         )
