@@ -57,7 +57,9 @@ def create_app():
             ).split(",")
             if (x_stripped := x.strip())
         ],
-        allow_methods=["GET", "POST"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     @app.post("/log/")
