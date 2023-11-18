@@ -53,7 +53,7 @@ def create_app():
             x_stripped
             for x in os.getenv(
                 "ALLOW_ORIGINS",
-                "https://jung.ninja,https://www.jung.ninja,http://localhost:4000",
+                "https://jung.ninja,https://www.jung.ninja,http://localhost:4000,https://github.com,https://www.github.com",
             ).split(",")
             if (x_stripped := x.strip())
         ],
