@@ -4,7 +4,7 @@ import base64
 import random
 import fastapi
 import uvicorn
-import openai
+from openai import OpenAI
 import requests
 import logging
 from functools import cache
@@ -20,10 +20,12 @@ RESUME = " ".join(
     " ".join([page.extract_text() for page in PdfReader(PDF_FILE).pages]).split()
 )
 
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME = os.getenv(
     "AUTHOR_FIRST_NAME", "Peter"
 ), os.getenv("AUTHOR_LAST_NAME", "Jung")
-AUTHOR_LOCATION = os.getenv("AUTHOR_LOCATION", "Prague, Czech Republic")
+AUTHOR_LOCATION = os.getenv("AUTHOR_LOCATION", "Funchal, Madeira")
 SYSTEM_MESSAGE = {
     "role": "system",
     "content": f"""You are a resume bot developed by {AUTHOR_FIRST_NAME} {AUTHOR_LAST_NAME}.
@@ -45,8 +47,6 @@ MEMORY = {}
 
 
 def create_app():
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-
     app = fastapi.FastAPI()
     app.add_middleware(
         CORSMiddleware,
@@ -95,7 +95,7 @@ Answer:
     ):
         messages = MEMORY.get(user_id, [SYSTEM_MESSAGE])
         messages = messages + [{"role": "user", "content": question}]
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4o",
             messages=messages,
             temperature=0.5,
@@ -103,9 +103,14 @@ Answer:
             n=1,
             max_tokens=500,
         )
-        answer = dict(response.choices[0]["message"])
-        MEMORY[user_id] = messages + [answer]
-        return {"answer": answer["content"]}
+        answer_message = response.choices[0].message
+        # Persist only the role/content to keep our memory format consistent
+        assistant_entry = {
+            "role": (answer_message.role or "assistant"),
+            "content": answer_message.content,
+        }
+        MEMORY[user_id] = messages + [assistant_entry]
+        return {"answer": assistant_entry["content"]}
 
     @app.get(
         "/photo_raw/",
@@ -151,7 +156,7 @@ def get_photobooth_image_content_cached(
     index: int,
     prompt: str,
     user_id: str,
-) -> str:
+) -> bytes:
     return get_photobooth_image_content(None, prompt, user_id)
 
 
@@ -159,26 +164,43 @@ def get_photobooth_image_content(
     request: fastapi.Request | None,
     prompt: str,
     user_id: str,
-) -> str:
+) -> bytes:
     choices = [
         x for x in os.listdir(IMAGE_DIR) if x.endswith(".png") or x.endswith(".jpg")
     ]
     chosen = random.choice(choices)
     with open(f"{IMAGE_DIR}/{chosen}", "rb") as f:
-        response = openai.Image.create_edit(
+        response = client.images.edit(
             image=f,
             prompt=prompt,
             n=1,
-            size="512x512",
+            size="1024x1024",
+            model=os.getenv("OPENAI_IMAGE_MODEL", "dall-e-2"),
         )
-        image_url = response.data[0]["url"]
-        send_slack_message(
-            f"""From: `{user_id}` ({get_client_info(request) if request is not None else None})
+        if not getattr(response, "data", None):
+            logging.error("OpenAI image edit returned empty data list")
+            raise RuntimeError("Image generation failed: empty data")
+        datum = response.data[0]
+        image_url = getattr(datum, "url", None)
+        b64 = getattr(datum, "b64_json", None)
+        if image_url:
+            send_slack_message(
+                f"""From: `{user_id}` ({get_client_info(request) if request is not None else None})
     Prompt: `{prompt}`
     Answer: {image_url}"""
-        )
-    content = requests.get(image_url).content
-    return content
+            )
+            return requests.get(image_url).content
+        elif b64:
+            send_slack_message(
+                f"""From: `{user_id}` ({get_client_info(request) if request is not None else None})
+    Prompt: `{prompt}`
+    Answer: inline base64 image"""
+            )
+            return base64.b64decode(b64)
+        else:
+            # Fallback: unexpected response structure
+            logging.error("OpenAI image edit returned no url or b64_json")
+            raise RuntimeError("Image generation failed: no data returned")
 
 
 def get_ip_info(ip: str) -> str:
