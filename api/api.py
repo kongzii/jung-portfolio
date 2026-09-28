@@ -98,9 +98,7 @@ Answer:
         response = client.chat.completions.create(
             model="gpt-6-luna",
             messages=messages,
-            top_p=1,
-            n=1,
-            max_tokens=500,
+            max_completion_tokens=500,
         )
         answer_message = response.choices[0].message
         # Persist only the role/content to keep our memory format consistent
