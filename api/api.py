@@ -174,7 +174,7 @@ def get_photobooth_image_content(
             prompt=prompt,
             n=1,
             size="1024x1024",
-            model=os.getenv("OPENAI_IMAGE_MODEL", "dall-e-2"),
+            model=os.getenv("OPENAI_IMAGE_MODEL", "gpt-image-2.5-sunburst"),
         )
         if not getattr(response, "data", None):
             logging.error("OpenAI image edit returned empty data list")
