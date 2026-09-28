@@ -96,9 +96,8 @@ Answer:
         messages = MEMORY.get(user_id, [SYSTEM_MESSAGE])
         messages = messages + [{"role": "user", "content": question}]
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-6-luna",
             messages=messages,
-            temperature=0.5,
             top_p=1,
             n=1,
             max_tokens=500,
